@@ -1,0 +1,20 @@
+version: '3.1'
+services:
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    #restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: analyzer
+      POSTGRES_USER: user
+    volumes:
+      - ./data:/var/lib/postgresql
+      - ./pg-initdb.d:/docker-entrypoint-initdb.d
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
