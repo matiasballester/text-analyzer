@@ -8,6 +8,8 @@ import io.vertx.core.json.Json;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.RoutingContext;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -50,6 +52,7 @@ public class TextAnalyzerHandler {
 
   public void analyze(RoutingContext rc) {
     JsonObject body = rc.getBodyAsJson();
+    Instant startTime = Instant.now();
     LOGGER.log(Level.INFO, "request body: {0}", body);
 
     Word wordToProcess = Word.of(body.mapTo(CreateWordCommand.class).getText());
@@ -60,6 +63,8 @@ public class TextAnalyzerHandler {
       JsonObject jsonObject = new JsonObject()
         .put("value", ClosestWord.find(wordToProcess.getValue(), existingWords))
         .put("lexical", ClosestWord.findLexicalClosestWord(wordToProcess.getValue(), existingWords));
+
+      LOGGER.log(Level.INFO, "Time spent: {0} ms", Duration.between(startTime, Instant.now()).toMillis());
       rc.response().end(jsonObject.encode());
     });
   }
