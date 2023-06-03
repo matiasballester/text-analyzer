@@ -46,7 +46,8 @@ public class MainVerticle extends AbstractVerticle {
     vertx.executeBlocking(future -> {
       DataInitializer dataInitializer = new DataInitializer(pgPool);
       dataInitializer.run();
-    }, asyncResult -> LOGGER.log(Level.INFO, "Done!"));
+      future.complete();
+    }, false, asyncResult -> LOGGER.log(Level.INFO, "Done!"));
   }
 
   private Router routes(TextAnalyzerHandler handlers) {
