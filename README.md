@@ -21,6 +21,14 @@ To run your application:
 ```
 
 Please first run docker compose up to start postgres docker image. It's required by the tool.
+By doing it when the app is started it will initialize the database with some initial data to test the text-analyzer tool.
+Because of it item 5 will never be reached:
+
+If no words are found to match against (as in the first request), the server will return null
+for both response fields.
+
+To make it work you need to remove database initialization.
+
 ```
 docker compose up
 ```
